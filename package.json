@@ -1,0 +1,17 @@
+{
+  "name": "color-compass",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "Dmitriy Semyushkin <git@devg.ru> (https://devg.ru)",
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "d3-color": "3",
+    "d3-interpolate": "3",
+    "d3-scale": "4",
+    "delta-e": "0.0.8"
+  },
+  "devDependencies": {
+    "prettier": "2"
+  }
+}
