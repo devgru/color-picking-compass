@@ -1,6 +1,6 @@
 {
   "name": "color-compass",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "index.js",
   "author": "Dmitriy Semyushkin <git@devg.ru> (https://devg.ru)",
   "type": "module",
@@ -11,6 +11,15 @@
     "d3-scale": "4",
     "delta-e": "0.0.8"
   },
+  "keywords": [
+    "oklab",
+    "oklch",
+    "palette generation"
+  ],
+  "files": [
+    "index.js",
+    "lib"
+  ],
   "devDependencies": {
     "prettier": "2"
   }
