@@ -9,7 +9,8 @@
     "culori": "2",
     "d3-interpolate": "3",
     "d3-scale": "4",
-    "delta-e": "0.0.8"
+    "delta-e": "0.0.8",
+    "round-to-precision": "^1.0.5"
   },
   "keywords": [
     "oklab",

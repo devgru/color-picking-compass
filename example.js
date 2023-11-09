@@ -1,14 +1,18 @@
-import { displayable, formatHex, oklab, p3, rgb } from 'culori';
+import { displayable, formatCss, formatHex, oklab, p3, rgb } from 'culori';
+import roundToPrecision from 'round-to-precision';
+
 import { okLabDelta, findOpposite } from './index.js';
 
-// After first run,
-// try replacing `displayable` with `inP3` to increase gamut.
-// You'll have to also replace `formatHex` with `formatCss`,
-// as result won't fit in RGB, represented by hex.
 function inP3(color) {
   let { r, b, g } = p3(color);
   return r >= 0 && r <= 1 && g >= 0 && g <= 1 && b >= 0 && b <= 1;
 }
+
+function formatP3(color) {
+  return displayable(color) ? formatHex(color) : formatCss(color);
+}
+
+const toCents = roundToPrecision(0.01, Number);
 
 const primaryColors = [
   rgb('rgb(0, 0, 0)'),
@@ -21,15 +25,31 @@ const primaryColors = [
   rgb('rgb(255, 255, 255)'),
 ];
 
-console.log('Trying to find "opposite" colors for each primary:');
-primaryColors.forEach(color => {
-  const oppositeColor = findOpposite(color, displayable);
+const gamuts = [
+  {
+    name: 'sRGB',
+    fitsGamut: displayable,
+  },
+  {
+    name: 'P3',
+    fitsGamut: inP3,
+  },
+];
 
-  console.log(
-    formatHex(color),
-    '→',
-    formatHex(oppositeColor),
-    'delta',
-    okLabDelta(oklab(color), oklab(oppositeColor)),
-  );
+console.log('Looking for opposite color for each primary color:');
+
+gamuts.forEach(({ name, fitsGamut }) => {
+  console.log();
+  console.log('Gamut', name);
+  primaryColors.forEach(color => {
+    const oppositeColor = findOpposite(color, fitsGamut);
+
+    console.log(
+      formatP3(color),
+      '→',
+      formatP3(oppositeColor),
+      'ΔE00',
+      toCents(okLabDelta(oklab(color), oklab(oppositeColor))),
+    );
+  });
 });
