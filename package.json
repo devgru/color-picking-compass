@@ -6,7 +6,7 @@
   "type": "module",
   "license": "MIT",
   "dependencies": {
-    "culori": "2",
+    "culori": "3",
     "d3-interpolate": "3",
     "d3-scale": "4",
     "delta-e": "0.0.8",
