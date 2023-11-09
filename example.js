@@ -1,28 +1,5 @@
 import { displayable, formatHex, oklab, p3, rgb } from 'culori';
-import {
-  colorScale,
-  okLabDelta,
-  stretchToGamut,
-  findClosestPointOnScale,
-} from './index.js';
-
-const ORIGIN = oklab({ l: 0.5, a: 0, b: 0 });
-
-function findOpposite(color, midpoint = ORIGIN) {
-  const okLabColor = oklab(color);
-  // `colorScale` is used to interpolate colors between current point and the origin, 50% gray point.
-  const scale = colorScale(okLabColor, midpoint);
-  // To find the opposite color we need to extend this scale, `stretchToGamut` is used for this.
-  const gamutWideScale = stretchToGamut(scale, displayable);
-  // To use resulting scale we first need to find current color on it, `closestPointOnScale` helps with this.
-  const closestPointOnScale = findClosestPointOnScale(
-    okLabColor,
-    gamutWideScale,
-    okLabDelta,
-  );
-  // And now we can just pick the color on the opposite side of the scale, equally distant from gamut edge.
-  return gamutWideScale(1 - closestPointOnScale);
-}
+import { okLabDelta, findOpposite } from './index.js';
 
 // After first run,
 // try replacing `displayable` with `inP3` to increase gamut.
@@ -46,7 +23,7 @@ const primaryColors = [
 
 console.log('Trying to find "opposite" colors for each primary:');
 primaryColors.forEach(color => {
-  const oppositeColor = findOpposite(color);
+  const oppositeColor = findOpposite(color, displayable);
 
   console.log(
     formatHex(color),
