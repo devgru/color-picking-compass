@@ -1,19 +1,7 @@
-import {
-  displayable,
-  formatCss,
-  formatHex,
-  inGamut,
-  oklab,
-  p3,
-  rgb,
-} from 'culori';
+import { displayable, inGamut, oklab, p3, rgb } from 'culori';
 import roundToPrecision from 'round-to-precision';
 
-import { okLabDelta, findOpposite } from './index.js';
-
-function formatP3(color) {
-  return displayable(color) ? formatHex(color) : formatCss(color);
-}
+import { findOpposite, formatHexOrCss, okLabDelta } from '.';
 
 const toCents = roundToPrecision(0.01, Number);
 
@@ -57,9 +45,9 @@ gamuts.forEach(({ name, primaryColors, fitsGamut }) => {
     const oppositeColor = findOpposite(color, fitsGamut);
 
     console.log(
-      formatP3(color),
+      formatHexOrCss(color),
       '→',
-      formatP3(oppositeColor),
+      formatHexOrCss(oppositeColor),
       'ΔE00',
       toCents(okLabDelta(oklab(color), oklab(oppositeColor))),
     );
