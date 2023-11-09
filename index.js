@@ -1,11 +1,4 @@
-import colorScale from './lib/colorScale.js';
-import findClosestPointOnScale from './lib/findClosestPointOnScale.js';
-import okLabDelta from './lib/okLabDelta.js';
-import stretchToGamut from './lib/stretchToGamut.js';
-
-export {
-  colorScale,
-  findClosestPointOnScale,
-  okLabDelta,
-  stretchToGamut,
-};
+export { colorScale } from './lib/colorScale.js';
+export { findClosestPointOnScale } from './lib/findClosestPointOnScale.js';
+export { okLabDelta } from './lib/okLabDelta.js';
+export { stretchToGamut } from './lib/stretchToGamut.js';

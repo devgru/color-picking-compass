@@ -1,6 +1,10 @@
 import { displayable, formatHex, oklab, p3, rgb } from 'culori';
-import { colorScale, okLabDelta, stretchToGamut } from './index.js';
-import findClosestPointOnScale from './lib/findClosestPointOnScale.js';
+import {
+  colorScale,
+  okLabDelta,
+  stretchToGamut,
+  findClosestPointOnScale,
+} from './index.js';
 
 const ORIGIN = oklab({ l: 0.5, a: 0, b: 0 });
 
