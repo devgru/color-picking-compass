@@ -1,12 +1,15 @@
-import { displayable, formatCss, formatHex, oklab, p3, rgb } from 'culori';
+import {
+  displayable,
+  formatCss,
+  formatHex,
+  inGamut,
+  oklab,
+  p3,
+  rgb,
+} from 'culori';
 import roundToPrecision from 'round-to-precision';
 
 import { okLabDelta, findOpposite } from './index.js';
-
-function inP3(color) {
-  let { r, b, g } = p3(color);
-  return r >= 0 && r <= 1 && g >= 0 && g <= 1 && b >= 0 && b <= 1;
-}
 
 function formatP3(color) {
   return displayable(color) ? formatHex(color) : formatCss(color);
@@ -31,7 +34,7 @@ const gamuts = [
   },
   {
     name: 'P3',
-    fitsGamut: inP3,
+    fitsGamut: inGamut('p3'),
     primaryColors: [
       p3('color(display-p3 0 0 0)'),
       p3('color(display-p3 1 0 0)'),
