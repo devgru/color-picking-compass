@@ -1,7 +1,9 @@
 import { displayable, inGamut, oklab, p3, rgb } from 'culori';
+import DeltaE from 'delta-e';
 import roundToPrecision from 'round-to-precision';
 
-import { findOpposite, formatHexOrCss, okLabDelta } from '.';
+import { findOppositeColor, formatHexOrCss, cachedDeltaE } from '.';
+import { OKLAB_ORIGIN } from './lib/origins.js';
 
 const toCents = roundToPrecision(0.01, Number);
 
@@ -21,7 +23,7 @@ const gamuts = [
     ],
   },
   {
-    name: 'P3',
+    name: 'Display-P3',
     fitsGamut: inGamut('p3'),
     primaryColors: [
       p3('color(display-p3 0 0 0)'),
@@ -36,20 +38,28 @@ const gamuts = [
   },
 ];
 
-console.log('Looking for opposite color for each primary color:');
+console.log('Looking for opposite color for each of the primary colors.');
 
 gamuts.forEach(({ name, primaryColors, fitsGamut }) => {
   console.log();
-  console.log('Gamut', name);
+  console.log(name, 'gamut');
+
   primaryColors.forEach(color => {
-    const oppositeColor = findOpposite(color, fitsGamut);
+    const deltaEFn = cachedDeltaE(DeltaE.getDeltaE00);
+    const oppositeColor = findOppositeColor(
+      color,
+      fitsGamut,
+      oklab,
+      OKLAB_ORIGIN,
+      deltaEFn,
+    );
 
     console.log(
-      formatHexOrCss(color),
-      '→',
-      formatHexOrCss(oppositeColor),
       'ΔE00',
-      toCents(okLabDelta(oklab(color), oklab(oppositeColor))),
+      formatHexOrCss(color),
+      '↔',
+      formatHexOrCss(oppositeColor),
+      toCents(deltaEFn(oklab(color), oklab(oppositeColor))),
     );
   });
 });

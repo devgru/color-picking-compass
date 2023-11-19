@@ -1,7 +1,8 @@
-export { formatHexOrCss } from './lib/formatHexOrCss.js';
-export { okLabDelta } from './lib/okLabDelta.js';
+export * from './lib/formatHexOrCss.js';
+export * from './lib/cachedDeltaE.js';
+export * from './lib/origins.js';
 
-export { colorScale } from './lib/scales/colorScale.js';
-export { findClosestPointOnScale } from './lib/scales/findClosestPointOnScale.js';
-export { findOpposite } from './lib/scales/findOpposite.js';
-export { stretchToGamut } from './lib/scales/stretchToGamut.js';
+export * from './lib/scales/colorScale.js';
+export * from './lib/scales/findClosestPointOnScale.js';
+export * from './lib/scales/findOppositeColor.js';
+export * from './lib/scales/stretchScaleToGamut.js';
