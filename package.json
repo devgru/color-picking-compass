@@ -8,8 +8,7 @@
   "dependencies": {
     "culori": "3",
     "d3-interpolate": "3",
-    "d3-scale": "4",
-    "delta-e": "0.0.8"
+    "d3-scale": "4"
   },
   "keywords": [
     "oklab",
@@ -21,6 +20,7 @@
     "lib"
   ],
   "devDependencies": {
+    "delta-e": "0.0.8",
     "prettier": "2",
     "round-to-precision": "^1.0.5"
   }
