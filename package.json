@@ -1,7 +1,7 @@
 {
   "name": "color-picking-compass",
-  "version": "0.0.4",
-  "main": "index.js",
+  "version": "0.0.5",
+  "main": "dist.js",
   "author": "Dmitriy Semyushkin <git@devg.ru> (https://devg.ru)",
   "type": "module",
   "license": "MIT",
@@ -15,9 +15,11 @@
     "oklch",
     "palette generation"
   ],
+  "scripts": {
+    "prepack": "bun build index.js --minify --outfile=dist.js -e culori -e d3-interpolate -e d3-scale"
+  },
   "files": [
-    "index.js",
-    "lib"
+    "dist.js"
   ],
   "devDependencies": {
     "delta-e": "0.0.8",
