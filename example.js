@@ -5,6 +5,8 @@ import roundToPrecision from 'round-to-precision';
 import { findOppositeColor, formatHexOrCss, cachedDeltaE } from '.';
 import { OKLAB_ORIGIN } from './lib/origins.js';
 
+const deltaEFn = cachedDeltaE(DeltaE.getDeltaE00);
+
 const toCents = roundToPrecision(0.01, Number);
 
 const gamuts = [
@@ -40,12 +42,11 @@ const gamuts = [
 
 console.log('Looking for opposite color for each of the primary colors.');
 
-gamuts.forEach(({ name, primaryColors, fitsGamut }) => {
+for (const { name, primaryColors, fitsGamut } of gamuts) {
   console.log();
   console.log(name, 'gamut');
 
-  primaryColors.forEach(color => {
-    const deltaEFn = cachedDeltaE(DeltaE.getDeltaE00);
+  for (const color of primaryColors) {
     const oppositeColor = findOppositeColor(
       color,
       fitsGamut,
@@ -61,5 +62,5 @@ gamuts.forEach(({ name, primaryColors, fitsGamut }) => {
       formatHexOrCss(oppositeColor),
       toCents(deltaEFn(oklab(color), oklab(oppositeColor))),
     );
-  });
-});
+  }
+}
