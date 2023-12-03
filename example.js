@@ -2,8 +2,12 @@ import { displayable, inGamut, oklab, p3, rgb } from 'culori';
 import DeltaE from 'delta-e';
 import roundToPrecision from 'round-to-precision';
 
-import { findOppositeColor, formatHexOrCss, cachedDeltaE } from '.';
-import { OKLAB_ORIGIN } from './lib/origins.js';
+import {
+  findOppositeColor,
+  formatHexOrCss,
+  cachedDeltaE,
+  OKLAB_ORIGIN,
+} from '.';
 
 const deltaEFn = cachedDeltaE(DeltaE.getDeltaE00);
 
