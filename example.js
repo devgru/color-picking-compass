@@ -1,4 +1,4 @@
-import { displayable, inGamut, oklab, p3, rgb } from 'culori';
+import { displayable, inGamut, oklab } from 'culori';
 import DeltaE from 'delta-e';
 import roundToPrecision from 'round-to-precision';
 
@@ -7,6 +7,7 @@ import {
   formatHexOrCss,
   cachedDeltaE,
   OKLAB_ORIGIN,
+  rgbCubeCornersColors,
 } from '.';
 
 const deltaEFn = cachedDeltaE(DeltaE.getDeltaE00);
@@ -16,41 +17,25 @@ const toCents = roundToPrecision(0.01, Number);
 const gamuts = [
   {
     name: 'sRGB',
+    cssColorSpace: 'srgb',
     fitsGamut: displayable,
-    primaryColors: [
-      rgb('rgb(0, 0, 0)'),
-      rgb('rgb(255, 0, 0)'),
-      rgb('rgb(255, 255, 0)'),
-      rgb('rgb(0, 255, 0)'),
-      rgb('rgb(0, 255, 255)'),
-      rgb('rgb(0, 0, 255)'),
-      rgb('rgb(255, 0, 255)'),
-      rgb('rgb(255, 255, 255)'),
-    ],
   },
   {
     name: 'Display-P3',
+    cssColorSpace: 'display-p3',
     fitsGamut: inGamut('p3'),
-    primaryColors: [
-      p3('color(display-p3 0 0 0)'),
-      p3('color(display-p3 1 0 0)'),
-      p3('color(display-p3 1 1 0)'),
-      p3('color(display-p3 0 1 0)'),
-      p3('color(display-p3 0 1 1)'),
-      p3('color(display-p3 0 0 1)'),
-      p3('color(display-p3 1 0 1)'),
-      p3('color(display-p3 1 1 1)'),
-    ],
   },
 ];
 
-console.log('Looking for opposite color for each of the primary colors.');
+console.log(
+  'Looking for opposite color for each of the RGB cube corner colors.',
+);
 
-for (const { name, primaryColors, fitsGamut } of gamuts) {
+for (const { name, cssColorSpace, fitsGamut } of gamuts) {
   console.log();
   console.log(name, 'gamut');
 
-  for (const color of primaryColors) {
+  for (const color of rgbCubeCornersColors(cssColorSpace)) {
     const oppositeColor = findOppositeColor(
       color,
       fitsGamut,
