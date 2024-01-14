@@ -19,6 +19,8 @@ export type RgbCubeVertex = {
   b: number;
   letter: string;
   name: RgbCubeVertexName;
+  isMonochrome: boolean;
+  toCssString: (gamut?: CssGamut) => string;
 };
 
 export type InGamutFn = (c: Color) => boolean;

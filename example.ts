@@ -14,12 +14,11 @@ import {
 // @ts-ignore weird types
 import DeltaE, { LAB } from 'delta-e';
 import {
-  DeltaEFn,
   CssGamut,
+  DeltaEFn,
   findOppositeColor,
   OKLAB_ORIGIN,
   rgbCubeVerticesArray,
-  toCssString,
 } from '.';
 
 export const labToLAB = ({ l, a, b }: Lab): LAB => ({ L: l, A: a, B: b });
@@ -52,7 +51,7 @@ for (const { name, cssGamut, fitsGamut } of gamuts) {
   console.log(name, 'gamut');
 
   for (const vertex of rgbCubeVerticesArray) {
-    const color = parse(toCssString(vertex, cssGamut));
+    const color = parse(vertex.toCssString(cssGamut));
     const oppositeColor: Oklab = findOppositeColor(
       color,
       OKLAB_ORIGIN,
