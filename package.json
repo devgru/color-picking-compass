@@ -10,9 +10,10 @@
     "d3-scale": "4"
   },
   "keywords": [
-    "oklab",
-    "oklch",
-    "palette generation"
+    "palette generation",
+    "opposite color",
+    "color scale",
+    "rgb cube"
   ],
   "scripts": {
     "prepack": "bun build index.js --minify --outfile=dist.js -e d3-interpolate -e d3-scale"
