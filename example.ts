@@ -1,33 +1,25 @@
 // @ts-ignore inGamut is missing from culori types
 import {
   Color,
+  differenceItp,
   displayable,
   formatCss,
   formatHex,
   inGamut,
-  lab,
-  Lab,
+  itp,
   Oklab,
-  oklab,
   parse,
-} from 'culori';
-// @ts-ignore weird types
-import DeltaE, { LAB } from 'delta-e';
+  xyz65,
+} from 'culori'; // @ts-ignore weird types
 import {
   CssGamut,
-  DeltaEFn,
   findOppositeColor,
   OKLAB_ORIGIN,
   rgbCubeVerticesArray,
 } from '.';
 
-export const labToLAB = ({ l, a, b }: Lab): LAB => ({ L: l, A: a, B: b });
-
 const formatHexOrCss = (color: Color): string =>
   displayable(color) ? formatHex(color) : formatCss(color);
-
-const deltaE: DeltaEFn = (color1: Color, color2: Color): number =>
-  DeltaE.getDeltaE00(labToLAB(lab(color1)), labToLAB(lab(color2)));
 
 const gamuts = [
   {
@@ -50,13 +42,14 @@ for (const { name, cssGamut, fitsGamut } of gamuts) {
   console.log();
   console.log(name, 'gamut');
 
+  const diff = differenceItp();
   for (const vertex of rgbCubeVerticesArray) {
     const color = parse(vertex.toCssString(cssGamut));
     const oppositeColor: Oklab = findOppositeColor(
       color,
       OKLAB_ORIGIN,
-      fitsGamut,
-      oklab,
+      color => diff(itp(xyz65(color)), color) < 0.0001 && fitsGamut(color),
+      itp,
     );
 
     console.log(
@@ -64,7 +57,7 @@ for (const { name, cssGamut, fitsGamut } of gamuts) {
       formatHexOrCss(color),
       '↔',
       formatHexOrCss(oppositeColor),
-      Math.round(deltaE(color, oppositeColor)),
+      Math.round(diff(color, oppositeColor)),
     );
   }
 }
