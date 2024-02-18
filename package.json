@@ -1,6 +1,6 @@
 {
   "name": "color-picking-compass",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "dist.js",
   "author": "Dima Semyushkin <git@devg.ru> (https://devg.ru)",
   "type": "module",
