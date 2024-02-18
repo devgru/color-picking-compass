@@ -2,13 +2,20 @@
 
 > Work in progress pet project
 
-Color picking compass is a tool aimed to explore the metaphor of the drawing compass, as it is used to draw geometrically defined complex shapes starting with just a couple of dots on paper.
+Color Picking Compass is a tool designed to explore the metaphor of the drawing compass, as it is used to draw
+geometrically defined complex shapes starting with just a couple of dots on paper.
 
-Being applied to color spaces, this leads us to approach of building palettes and schemes using minimum amount of input and relying on everything we know about color spaces.
+When applied to color spaces, this leads us to an approach of building palettes and schemes with a minimal input and
+relying on common knowledge of color spaces properties.
+
+### WIP
+
+The project is heavily under development. Feel free to explore undocumented API surface.
 
 ### Example
 
-Run `example.js` and check it out. It demonstrates how to use `color-picking-compass` by composing some of provided functions.
+Run `bun prepack ; bun example.ts` and check the output. It demonstrates how to use `color-picking-compass` by composing
+some of provided functions.
 
 ## License
 
