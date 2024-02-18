@@ -5,75 +5,82 @@ function toCssString(gamut: CssGamut = 'srgb'): string {
   return `color(${gamut} ${r} ${g} ${b})`;
 }
 
-const black = {
+const black: RgbCubeVertex = {
   r: 0,
   g: 0,
   b: 0,
   letter: 'k',
-  name: 'black' as RgbCubeVertexName,
+  name: 'black',
   isMonochrome: true,
   toCssString,
 };
-const red = {
+
+const red: RgbCubeVertex = {
   r: 1,
   g: 0,
   b: 0,
   letter: 'r',
-  name: 'red' as RgbCubeVertexName,
+  name: 'red',
   isMonochrome: false,
   toCssString,
 };
-const yellow = {
+
+const yellow: RgbCubeVertex = {
   r: 1,
   g: 1,
   b: 0,
   letter: 'y',
-  name: 'yellow' as RgbCubeVertexName,
+  name: 'yellow',
   isMonochrome: false,
   toCssString,
 };
-const green = {
+
+const green: RgbCubeVertex = {
   r: 0,
   g: 1,
   b: 0,
   letter: 'g',
-  name: 'green' as RgbCubeVertexName,
+  name: 'green',
   isMonochrome: false,
   toCssString,
 };
-const cyan = {
+
+const cyan: RgbCubeVertex = {
   r: 0,
   g: 1,
   b: 1,
   letter: 'c',
-  name: 'cyan' as RgbCubeVertexName,
+  name: 'cyan',
   isMonochrome: false,
   toCssString,
 };
-const blue = {
+
+const blue: RgbCubeVertex = {
   r: 0,
   g: 0,
   b: 1,
   letter: 'b',
-  name: 'blue' as RgbCubeVertexName,
+  name: 'blue',
   isMonochrome: false,
   toCssString,
 };
-const magenta = {
+
+const magenta: RgbCubeVertex = {
   r: 1,
   g: 0,
   b: 1,
   letter: 'm',
-  name: 'magenta' as RgbCubeVertexName,
+  name: 'magenta',
   isMonochrome: false,
   toCssString,
 };
-const white = {
+
+const white: RgbCubeVertex = {
   r: 1,
   g: 1,
   b: 1,
   letter: 'w',
-  name: 'white' as RgbCubeVertexName,
+  name: 'white',
   isMonochrome: true,
   toCssString,
 };
