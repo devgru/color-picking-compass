@@ -26,3 +26,8 @@ export type RgbCubeVertex = {
 export type InGamutFn = (c: Color) => boolean;
 export type ColorScale<M extends Mode> = (n: number) => FindColorByMode<M>;
 export type DeltaEFn = (color1: Color, color2: Color) => number;
+
+export type HSPoint = {
+  h: number;
+  s: number;
+};
