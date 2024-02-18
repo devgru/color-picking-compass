@@ -24,10 +24,16 @@ export type RgbCubeVertex = {
 };
 
 export type InGamutFn = (c: Color) => boolean;
-export type ColorScale<M extends Mode> = (n: number) => FindColorByMode<M>;
-export type DeltaEFn = (color1: Color, color2: Color) => number;
+
+export type ColorScale<M extends Mode> = {
+  stretchToGamut: (inGamut: InGamutFn) => ColorScale<M>;
+  invert: (color: Color) => number;
+  (n: number): FindColorByMode<M>;
+};
 
 export type HSPoint = {
   h: number;
   s: number;
 };
+
+export type ColorOrString = Color | string;

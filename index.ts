@@ -14,6 +14,4 @@ export * from './lib/grids/linear/p3MonochromeLine';
 export * from './lib/grids/linear/sRgbMonochromeLine';
 
 export * from './lib/scales/colorScale';
-export * from './lib/scales/findClosestPointOnScale';
 export * from './lib/scales/findOppositeColor';
-export * from './lib/scales/stretchScaleToGamut';

@@ -48,8 +48,8 @@ for (const { name, cssGamut, fitsGamut } of gamuts) {
     const oppositeColor: Oklab = findOppositeColor(
       color,
       OKLAB_ORIGIN,
-      color => diff(itp(xyz65(color)), color) < 0.0001 && fitsGamut(color),
       itp,
+      color => diff(itp(xyz65(color)), color) < 0.0001 && fitsGamut(color),
     );
 
     console.log(
