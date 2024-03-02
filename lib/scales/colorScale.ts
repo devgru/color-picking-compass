@@ -28,14 +28,14 @@ export const colorScale = <M extends Mode>(
   const scale = scaleLinear<FindColorByMode<M>>()
     .range(colors.map(c => colorModel(c)))
     .interpolate(interpolateObject);
-  const builtColorScale = (n: number) => ({ ...scale(n) });
+  const instance = (n: number) => ({ ...scale(n) });
 
-  builtColorScale.stretchToGamut = (inGamut: InGamutFn): ColorScale<M> => {
+  instance.stretchToGamut = (inGamut: InGamutFn): ColorScale<M> => {
     const bisectGamutEdge = (
       current: number,
       step: number,
     ): FindColorByMode<M> => {
-      const extent = builtColorScale(current + step);
+      const extent = instance(current + step);
       if (inGamut(extent)) {
         if (Math.abs(step) <= STEP_EPSILON) {
           return extent;
@@ -52,7 +52,7 @@ export const colorScale = <M extends Mode>(
     return colorScale([currentColorEdge, oppositeColorEdge], colorModel);
   };
 
-  builtColorScale.invert = (currentColor: ColorOrString): number => {
+  instance.invert = (currentColor: ColorOrString): number => {
     const mappedColor: FindColorByMode<M> = colorModel(currentColor);
     const bisectColorOnScale = (l: number, r: number): number => {
       const mid = (l + r) / 2;
@@ -78,5 +78,5 @@ export const colorScale = <M extends Mode>(
     return bisectColorOnScale(0, 1);
   };
 
-  return builtColorScale;
+  return instance;
 };
