@@ -14,4 +14,5 @@ export * from './lib/grids/linear/p3MonochromeLine';
 export * from './lib/grids/linear/sRgbMonochromeLine';
 
 export * from './lib/scales/colorScale';
+export * from './lib/scales/cylindricalScale';
 export * from './lib/scales/findOppositeColor';
