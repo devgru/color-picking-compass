@@ -26,6 +26,6 @@
     "@types/d3-interpolate": "3",
     "@types/d3-scale": "4",
     "culori": "4",
-    "prettier": "2"
+    "prettier": "3"
   }
 }
