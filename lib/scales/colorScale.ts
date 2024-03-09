@@ -4,6 +4,7 @@ import { FindColorByMode } from 'culori/src/common';
 import { ConvertFn } from 'culori/src/converter';
 import { ColorOrString, ColorScale, InGamutFn } from '../types';
 import { interpolateHue, interpolateObject } from 'd3-interpolate';
+import { DiffFn } from 'culori/src/difference';
 
 const STEP_EPSILON = 2 ** -20;
 const DIFF_EPSILON = 2 ** -10;
@@ -91,6 +92,41 @@ export const colorScale = <M extends Mode>(
     };
 
     return bisectColorOnScale(0, 1);
+  };
+
+  instance.consume = (diffFn: DiffFn, maxDiff: number): MappedColor[] => {
+    let n = 0;
+    let delta = 1 / 32;
+    const colors: MappedColor[] = [instance(n)];
+
+    let prevColor: MappedColor = colors[0];
+
+    while (true) {
+      if (diffFn(prevColor, instance(n + delta * 2)) <= maxDiff) {
+        if (n + delta > 1) {
+          colors.push(instance(1));
+          return colors;
+        }
+        delta *= 2;
+        continue;
+      }
+
+      const proposedColor: MappedColor = instance(n + delta);
+      const diff: number = diffFn(prevColor, proposedColor);
+      if (diff > maxDiff) {
+        delta /= 2;
+        continue;
+      }
+      if (n >= 1) {
+        if (diffFn(prevColor, instance(1)) > 0) {
+          colors.push(instance(1));
+        }
+        return colors;
+      }
+      prevColor = proposedColor;
+      colors.push(proposedColor);
+      n += delta;
+    }
   };
 
   return instance;

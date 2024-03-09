@@ -1,5 +1,6 @@
 import { Color, Mode } from 'culori';
 import { FindColorByMode } from 'culori/src/common';
+import { DiffFn } from 'culori/src/difference';
 
 export type CssGamut = 'srgb' | 'display-p3';
 
@@ -7,7 +8,7 @@ export type RgbCubeVertexName =
   | 'black'
   | 'red'
   | 'yellow'
-  | 'green'
+  | 'lime'
   | 'cyan'
   | 'blue'
   | 'magenta'
@@ -23,7 +24,7 @@ export type RgbCubeVertex = {
   toCssString: (gamut?: CssGamut) => string;
 };
 
-export type InGamutFn = (c: Color) => boolean;
+export type InGamutFn = (color: Color) => boolean;
 
 export type HSPoint = {
   h: number;
@@ -33,11 +34,13 @@ export type HSPoint = {
 export type ColorScale<M extends Mode> = {
   stretchToGamut: (inGamut: InGamutFn) => ColorScale<M>;
   invert: (color: ColorOrString) => number;
+  consume: (diffFn: DiffFn, maxDiff: number) => FindColorByMode<M>[];
   (n: number): FindColorByMode<M>;
 };
 
 export type ItpColorScale = {
   invert: (color: Itp) => number;
+  consume: (diffFn: DiffFn, maxDiff: number) => Itp[];
   (n: number): Itp;
 };
 
@@ -49,3 +52,8 @@ export type Itp = {
 };
 
 export type ColorOrString = Color | string;
+
+export type Offset = (offset: Itp) => {
+  add: (color: Itp) => Itp;
+  sub: (color: Itp) => Itp;
+};
