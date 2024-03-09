@@ -40,7 +40,7 @@ const green: RgbCubeVertex = {
   g: 1,
   b: 0,
   letter: 'g',
-  name: 'green',
+  name: 'lime',
   isMonochrome: false,
   toCssString,
 };
