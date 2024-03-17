@@ -1,6 +1,6 @@
 {
   "name": "color-picking-compass",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "main": "dist.js",
   "author": "Dima Semyushkin <git@devg.ru> (https://devg.ru)",
   "type": "module",
@@ -12,6 +12,7 @@
   "keywords": [
     "palette generation",
     "opposite color",
+    "wide gamut colors",
     "color scale",
     "rgb cube"
   ],
