@@ -129,5 +129,17 @@ export const colorScale = <M extends Mode>(
     }
   };
 
+  instance.consumeUniform = (diffFn: DiffFn, maxDiff: number): MappedColor[] => {
+    const fullDiff = diffFn(instance(0), instance(1));
+    const steps = Math.ceil(fullDiff / maxDiff);
+    let step = 0;
+    const colors: MappedColor[] = [];
+    while (step <= steps) {
+      colors.push(instance(step / steps));
+      step++;
+    }
+    return colors;
+  };
+
   return instance;
 };

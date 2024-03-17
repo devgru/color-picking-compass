@@ -35,6 +35,7 @@ export type ColorScale<M extends Mode> = {
   stretchToGamut: (inGamut: InGamutFn) => ColorScale<M>;
   invert: (color: ColorOrString) => number;
   consume: (diffFn: DiffFn, maxDiff: number) => FindColorByMode<M>[];
+  consumeUniform: (diffFn: DiffFn, maxDiff: number) => FindColorByMode<M>[];
   (n: number): FindColorByMode<M>;
 };
 

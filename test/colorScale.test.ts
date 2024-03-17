@@ -88,4 +88,25 @@ describe('color scale', () => {
     expect(colors[colors.length - 1]).toEqual(TO);
     expect(colors.length).toBe(5);
   });
+
+  test('consume ITP scale (uniform)', () => {
+    const FROM: Itp = {
+      mode: 'itp',
+      i: 0,
+      t: 0,
+      p: 0,
+    };
+    const TO: Itp = {
+      mode: 'itp',
+      i: 0.5,
+      t: 0,
+      p: 0,
+    };
+    const scale = colorScale([FROM, TO], itp);
+
+    const colors = scale.consumeUniform(differenceItp(), 90);
+    expect(colors[0]).toEqual(FROM);
+    expect(colors[colors.length - 1]).toEqual(TO);
+    expect(colors.length).toBe(5);
+  });
 });
