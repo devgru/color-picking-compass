@@ -4,7 +4,9 @@ export * from './lib/constants/origins';
 export * from './lib/constants/rgbCubeVertices';
 
 export * from './lib/grids/cubic/p3Grid';
+export * from './lib/grids/cubic/p3Hull';
 export * from './lib/grids/cubic/sRgbGrid';
+export * from './lib/grids/cubic/sRgbHull';
 export * from './lib/grids/cylindrical/hsDisc';
 export * from './lib/grids/cylindrical/hslGrid';
 export * from './lib/grids/cylindrical/hsvGrid';
