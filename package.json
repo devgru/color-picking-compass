@@ -9,6 +9,10 @@
     "d3-interpolate": "3",
     "d3-scale": "4"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devgru/color-picking-compass.git"
+  },
   "keywords": [
     "palette generation",
     "opposite color",
