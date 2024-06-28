@@ -8,7 +8,7 @@ export type RgbCubeVertexName =
   | 'black'
   | 'red'
   | 'yellow'
-  | 'lime'
+  | 'green'
   | 'cyan'
   | 'blue'
   | 'magenta'

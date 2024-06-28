@@ -40,7 +40,7 @@ const green: RgbCubeVertex = {
   g: 1,
   b: 0,
   letter: 'g',
-  name: 'lime',
+  name: 'green',
   isMonochrome: false,
   toCssString,
 };
@@ -85,7 +85,9 @@ const white: RgbCubeVertex = {
   toCssString,
 };
 
-export const rgbCubeVerticesArray: RgbCubeVertex[] = [
+export const rgbCubeVerticesObject: {
+  [key in RgbCubeVertexName]: RgbCubeVertex;
+} = {
   black,
   red,
   yellow,
@@ -94,7 +96,11 @@ export const rgbCubeVerticesArray: RgbCubeVertex[] = [
   blue,
   magenta,
   white,
-];
+};
+
+export const rgbCubeVerticesArray: RgbCubeVertex[] = Object.values(
+  rgbCubeVerticesObject,
+);
 
 export const rgbCubeVerticesMap: Map<RgbCubeVertexName, RgbCubeVertex> =
   new Map(rgbCubeVerticesArray.map(Vertex => [Vertex.name, Vertex]));
