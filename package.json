@@ -21,7 +21,8 @@
     "rgb cube"
   ],
   "scripts": {
-    "prepack": "bun build index.js --minify --outfile=dist.js -e d3-interpolate -e d3-scale"
+    "prepack": "bun build index.js --minify --outfile=dist.js -e d3-interpolate -e d3-scale",
+    "test": "bun run prepack ; bun test"
   },
   "files": [
     "dist.js"
