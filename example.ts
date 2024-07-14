@@ -7,13 +7,13 @@ import {
   formatHex,
   inGamut,
   itp,
-  Oklab,
   parse,
   xyz65,
 } from 'culori'; // @ts-ignore weird types
 import {
   CssGamut,
   findOppositeColor,
+  Itp,
   OKLAB_ORIGIN,
   rgbCubeVerticesArray,
 } from '.';
@@ -45,7 +45,7 @@ for (const { name, cssGamut, fitsGamut } of gamuts) {
   const diff = differenceItp();
   for (const vertex of rgbCubeVerticesArray) {
     const color = parse(vertex.toCssString(cssGamut));
-    const oppositeColor: Oklab = findOppositeColor(
+    const oppositeColor: Itp = findOppositeColor(
       color,
       OKLAB_ORIGIN,
       itp,
