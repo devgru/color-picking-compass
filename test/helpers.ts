@@ -1,8 +1,15 @@
 import { expect } from 'bun:test';
-import { Itp } from '../lib/types';
 
-export const verifyItp = (a: Itp, b: Itp) => {
-  expect(a.i).toBeCloseTo(b.i);
-  expect(a.t).toBeCloseTo(b.t);
-  expect(a.p).toBeCloseTo(b.p);
+export const verifyObject = (a: any, b: any) => {
+  for (const key in a) {
+    if (typeof b[key] === 'undefined') {
+      throw new Error(`Unmatched key: ${key}`);
+    }
+
+    if (typeof a[key] === 'string') {
+      expect(a[key]).toBe(b[key]);
+    } else {
+      expect(a[key]).toBeCloseTo(b[key]);
+    }
+  }
 };

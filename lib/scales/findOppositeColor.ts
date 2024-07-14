@@ -1,16 +1,14 @@
-import { Color, Mode } from 'culori';
-import { ConvertFn } from 'culori/src/converter';
-import { colorScale } from './colorScale';
-import { InGamutFn } from '../types';
+import { linearColorScale } from './linearColorScale';
+import { Color, ConvertFn, ColorInMode, InGamutFn, Mode } from '../types';
 
 export const findOppositeColor = <M extends Mode>(
   color: Color,
   origin: Color,
   colorModel: ConvertFn<M>,
   inGamut: InGamutFn,
-) => {
-  // `colorScale` is used to interpolate colors between current point and the origin.
-  const scale = colorScale([color, origin], colorModel);
+): ColorInMode<M> => {
+  // `linearColorScale` is used to interpolate colors between current point and the origin.
+  const scale = linearColorScale([color, origin], colorModel);
 
   // To find the opposite color we need to extend this scale using `stretchToGamut`.
   const gamutStretchedScale = scale.stretchToGamut(inGamut);

@@ -2,10 +2,10 @@ import { describe, test } from 'bun:test';
 import { fromLch } from '../lib/polar/fromLch';
 import { toLch } from '../lib/polar/toLch';
 import { Itp } from '../lib/types';
-import { verifyItp } from './helpers';
+import { verifyObject } from './helpers';
 
 const verifyConversion = (color: Itp) => {
-  verifyItp(color, fromLch(toLch(color)));
+  verifyObject(color, fromLch(toLch(color)));
 };
 
 describe('LCH conversion', () => {
