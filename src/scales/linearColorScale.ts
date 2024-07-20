@@ -1,13 +1,7 @@
-import {
-  ColorOrString,
-  ConvertFn,
-  DiffFn,
-  ColorInMode,
-  InGamutFn,
-  LinearColorScale,
-  Mode,
-} from '../types';
-import { colorScale } from './colorScale';
+import { ColorScale, colorScale } from './colorScale';
+import { ColorInMode, DiffFn, Mode } from '../types/colors';
+
+export type InGamutFn<M extends Mode> = (color: ColorInMode<M>) => boolean;
 
 const STEP_EPSILON = 2 ** -20;
 const DIFF_EPSILON = 2 ** -10;
@@ -25,23 +19,29 @@ const distance = <M extends Mode>(
       }, 0),
   );
 
+export interface LinearColorScale<M extends Mode> extends ColorScale<M> {
+  stretchToGamut: (inGamut: InGamutFn<M>) => LinearColorScale<M>;
+  invert: (color: ColorInMode<M>) => number;
+  consumeWithNaturalMetric: (
+    diffFn: DiffFn<M>,
+    maxDiff: number,
+  ) => ColorInMode<M>[];
+}
+
 export const linearColorScale = <M extends Mode>(
-  colors: ColorOrString[],
-  colorModel: ConvertFn<M> = Object,
+  colors: [ColorInMode<M>, ColorInMode<M>],
 ): LinearColorScale<M> => {
-  type MappedColor = ColorInMode<M>;
-  const colorsRange = colors.map(c => colorModel(c));
-  if (Object.hasOwn(colorsRange[0], 'h')) {
+  if (Object.hasOwn(colors[0], 'h')) {
     throw new Error(
-      'Using linearColorScale for cylindrical color models is not allowed. Use cylindrical',
+      'Using linearColorScale for cylindrical color models is not allowed.',
     );
   }
 
-  const scale = colorScale<M>(colorsRange, true);
+  const scale = colorScale<M>(colors, false);
   const instance = (n: number) => ({ ...scale(n) });
 
-  instance.stretchToGamut = (inGamut: InGamutFn): LinearColorScale<M> => {
-    const bisectGamutEdge = (current: number, step: number): MappedColor => {
+  instance.stretchToGamut = (inGamut: InGamutFn<M>): LinearColorScale<M> => {
+    const bisectGamutEdge = (current: number, step: number): ColorInMode<M> => {
       const extent = instance(current + step);
       if (inGamut(extent)) {
         if (Math.abs(step) <= STEP_EPSILON) {
@@ -56,11 +56,10 @@ export const linearColorScale = <M extends Mode>(
     const currentColorEdge = bisectGamutEdge(0.5, -1);
     const oppositeColorEdge = bisectGamutEdge(0.5, 1);
 
-    return linearColorScale([currentColorEdge, oppositeColorEdge], colorModel);
+    return linearColorScale([currentColorEdge, oppositeColorEdge]);
   };
 
-  instance.invert = (currentColor: ColorOrString): number => {
-    const mappedColor: MappedColor = colorModel(currentColor);
+  instance.invert = (color: ColorInMode<M>): number => {
     const bisectColorOnScale = (l: number, r: number): number => {
       const mid = (l + r) / 2;
       const diff = r - l;
@@ -71,8 +70,8 @@ export const linearColorScale = <M extends Mode>(
         return r;
       }
 
-      const lDistance = distance(mappedColor, scale(l));
-      const rDistance = distance(mappedColor, scale(r));
+      const lDistance = distance(color, scale(l));
+      const rDistance = distance(color, scale(r));
       if (lDistance < rDistance) {
         return bisectColorOnScale(l, mid);
       } else if (lDistance === rDistance) {
@@ -88,13 +87,13 @@ export const linearColorScale = <M extends Mode>(
   instance.consume = scale.consume;
 
   instance.consumeWithNaturalMetric = (
-    diffFn: DiffFn,
+    diffFn: DiffFn<M>,
     maxDiff: number,
-  ): MappedColor[] => {
+  ): ColorInMode<M>[] => {
     const fullDiff = diffFn(instance(0), instance(1));
     const steps = Math.ceil(fullDiff / maxDiff);
     let step = 0;
-    const colors: MappedColor[] = [];
+    const colors: ColorInMode<M>[] = [];
     while (step <= steps) {
       colors.push(instance(step / steps));
       step++;

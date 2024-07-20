@@ -1,8 +1,8 @@
 import { describe, test } from 'bun:test';
-import { fromLch } from '../lib/polar/fromLch';
-import { Itp } from '../lib/types';
-import { itpSpiralScale } from '../lib/scales/itpSpiralScale';
+import { fromLch } from '../src/polar/fromLch';
+import { itpSpiralScale } from '../src/scales/itpSpiralScale';
 import { verifyObject } from './helpers';
+import { Itp } from "../src/types/colors";
 
 describe('itp spiral scale', () => {
   test('has predictable midpoint', () => {

@@ -45,11 +45,11 @@ for (const { name, cssGamut, fitsGamut } of gamuts) {
   const diff = differenceItp();
   for (const vertex of rgbCubeVerticesArray) {
     const color = parse(vertex.toCssString(cssGamut));
-    const oppositeColor: Itp = findOppositeColor(
-      color,
-      OKLAB_ORIGIN,
-      itp,
-      color => diff(itp(xyz65(color)), color) < 0.0001 && fitsGamut(color),
+    const oppositeColor: Itp = findOppositeColor<'itp'>(
+      itp(color),
+      itp(OKLAB_ORIGIN),
+      (color: Color): boolean =>
+        diff(itp(xyz65(color)), color) < 0.0001 && fitsGamut(color),
     );
 
     console.log(

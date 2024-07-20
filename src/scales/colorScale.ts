@@ -1,6 +1,6 @@
 import { scaleLinear } from 'd3-scale';
-import { ColorScale, DiffFn, ColorInMode, Mode } from '../types';
 import { interpolateHue, interpolateObject } from 'd3-interpolate';
+import { ColorInMode, ColorPair, DiffFn, Mode } from "../types/colors";
 
 const interpolateColor = <M extends Mode>(
   a: ColorInMode<M>,
@@ -14,8 +14,14 @@ const interpolateColor = <M extends Mode>(
   return base;
 };
 
+export interface ColorScale<M extends Mode> {
+  (n: number): ColorInMode<M>;
+
+  consume: (diffFn: DiffFn<M>, maxDiff: number) => ColorInMode<M>[];
+}
+
 export const colorScale = <M extends Mode>(
-  colors: ColorInMode<M>[],
+  colors: ColorPair<M>,
   optimizeHueTraversal = true,
 ): ColorScale<M> => {
   type MappedColor = ColorInMode<M>;
@@ -24,9 +30,9 @@ export const colorScale = <M extends Mode>(
     .range(colors)
     .interpolate(optimizeHueTraversal ? interpolateColor : interpolateObject);
 
-  const instance = (n: number) => ({ ...scale(n) });
+  const instance = (n: number): MappedColor => ({ ...scale(n) });
 
-  instance.consume = (diffFn: DiffFn, maxDiff: number): MappedColor[] => {
+  instance.consume = (diffFn: DiffFn<M>, maxDiff: number): MappedColor[] => {
     let n = 0;
     let delta = 1 / 32;
     const colors: MappedColor[] = [instance(n)];

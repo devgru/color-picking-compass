@@ -1,20 +1,19 @@
-export * from './lib/types';
+export * from './src/constants/origins';
+export * from './src/constants/rgbCubeVertices';
 
-export * from './lib/constants/origins';
-export * from './lib/constants/rgbCubeVertices';
+export * from './src/grids/cubic/p3Grid';
+export * from './src/grids/cubic/p3Hull';
+export * from './src/grids/cubic/sRgbGrid';
+export * from './src/grids/cubic/sRgbHull';
+export * from './src/grids/cylindrical/hsDisc';
+export * from './src/grids/cylindrical/hslGrid';
+export * from './src/grids/cylindrical/hsvGrid';
+export * from './src/grids/cylindrical/okHslGrid';
+export * from './src/grids/cylindrical/okHsvGrid';
+export * from './src/grids/linear/p3MonochromeLine';
+export * from './src/grids/linear/sRgbMonochromeLine';
 
-export * from './lib/grids/cubic/p3Grid';
-export * from './lib/grids/cubic/p3Hull';
-export * from './lib/grids/cubic/sRgbGrid';
-export * from './lib/grids/cubic/sRgbHull';
-export * from './lib/grids/cylindrical/hsDisc';
-export * from './lib/grids/cylindrical/hslGrid';
-export * from './lib/grids/cylindrical/hsvGrid';
-export * from './lib/grids/cylindrical/okHslGrid';
-export * from './lib/grids/cylindrical/okHsvGrid';
-export * from './lib/grids/linear/p3MonochromeLine';
-export * from './lib/grids/linear/sRgbMonochromeLine';
-
-export * from './lib/scales/findOppositeColor';
-export * from './lib/scales/itpSpiralScale';
-export * from './lib/scales/linearColorScale';
+export * from './src/scales/colorScale';
+export * from './src/scales/findOppositeColor';
+export * from './src/scales/itpSpiralScale';
+export * from './src/scales/linearColorScale';

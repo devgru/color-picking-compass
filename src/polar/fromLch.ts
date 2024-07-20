@@ -1,5 +1,6 @@
 import { Lch } from 'culori';
-import { Itp } from '../types';
+
+import { Itp } from "../types/colors";
 
 export const fromLch = ({ l, c, h }: Lch): Itp => {
   const hRad = (h * Math.PI) / 180;

@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'bun:test';
-import { linearColorScale } from '../lib/scales/linearColorScale';
+import { unary } from 'lodash-es';
+import { linearColorScale } from '../src/scales/linearColorScale';
 import {
   differenceCie76,
   differenceItp,
@@ -9,11 +10,12 @@ import {
   Lab65,
   rgb,
 } from 'culori';
-import { Itp } from '../lib/types';
+
+import { Itp } from '../src/types/colors';
 
 describe('linear color scale', () => {
   test('stretch', () => {
-    const scale = linearColorScale(['#010000', '#020000'], rgb);
+    const scale = linearColorScale(['#010000', '#020000'].map(unary(rgb)));
     const stretched = scale.stretchToGamut(displayable);
     expect(stretched.invert(rgb('#010000'))).not.toBe(
       stretched.invert(rgb('#020000')),
@@ -21,7 +23,7 @@ describe('linear color scale', () => {
   });
 
   test('invert', () => {
-    const scale = linearColorScale(['#0100' + '00', '#020000'], rgb);
+    const scale = linearColorScale(['#010000', '#020000'].map(unary(rgb)));
     expect(scale.invert(rgb('#010000'))).toBeCloseTo(0);
     expect(scale.invert(rgb('#020000'))).toBeCloseTo(1);
   });
@@ -39,7 +41,7 @@ describe('linear color scale', () => {
       a: 0,
       b: 0,
     };
-    const scale = linearColorScale([FROM, TO], lab65);
+    const scale = linearColorScale([FROM, TO], unary(lab65));
 
     const colors = scale.consume(differenceCie76(), 1);
     expect(colors[0]).toEqual(FROM);
@@ -60,7 +62,8 @@ describe('linear color scale', () => {
       t: 0,
       p: 0,
     };
-    const scale = linearColorScale([FROM, TO], itp);
+    const colors1 = [FROM, TO].map(unary(itp));
+    const scale = linearColorScale(colors1);
 
     const colors = scale.consume(differenceItp(), 360);
     expect(colors[0]).toEqual(FROM);
@@ -81,7 +84,7 @@ describe('linear color scale', () => {
       t: 0,
       p: 0,
     };
-    const scale = linearColorScale([FROM, TO], itp);
+    const scale = linearColorScale([FROM, TO].map(unary(itp)));
 
     const colors = scale.consume(differenceItp(), 90);
     expect(colors[0]).toEqual(FROM);
@@ -102,7 +105,7 @@ describe('linear color scale', () => {
       t: 0,
       p: 0,
     };
-    const scale = linearColorScale([FROM, TO], itp);
+    const scale = linearColorScale([FROM, TO].map(unary(itp)));
 
     const colors = scale.consumeWithNaturalMetric(differenceItp(), 90);
     expect(colors[0]).toEqual(FROM);

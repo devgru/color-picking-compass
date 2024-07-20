@@ -1,14 +1,13 @@
-import { linearColorScale } from './linearColorScale';
-import { Color, ConvertFn, ColorInMode, InGamutFn, Mode } from '../types';
+import { InGamutFn, linearColorScale } from './linearColorScale';
+import { ColorInMode, Mode } from '../types/colors';
 
 export const findOppositeColor = <M extends Mode>(
-  color: Color,
-  origin: Color,
-  colorModel: ConvertFn<M>,
-  inGamut: InGamutFn,
+  color: ColorInMode<M>,
+  origin: ColorInMode<M>,
+  inGamut: InGamutFn<M>,
 ): ColorInMode<M> => {
   // `linearColorScale` is used to interpolate colors between current point and the origin.
-  const scale = linearColorScale([color, origin], colorModel);
+  const scale = linearColorScale([color, origin]);
 
   // To find the opposite color we need to extend this scale using `stretchToGamut`.
   const gamutStretchedScale = scale.stretchToGamut(inGamut);

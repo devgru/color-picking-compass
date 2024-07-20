@@ -1,8 +1,8 @@
 import { describe, test } from 'bun:test';
-import { fromLch } from '../lib/polar/fromLch';
-import { toLch } from '../lib/polar/toLch';
-import { Itp } from '../lib/types';
+import { fromLch } from '../src/polar/fromLch';
+import { toLch } from '../src/polar/toLch';
 import { verifyObject } from './helpers';
+import { Itp } from "../src/types/colors";
 
 const verifyConversion = (color: Itp) => {
   verifyObject(color, fromLch(toLch(color)));

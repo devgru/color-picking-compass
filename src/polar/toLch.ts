@@ -1,5 +1,6 @@
 import { Lch } from 'culori';
-import { Itp } from '../types';
+
+import { Itp } from "../types/colors";
 
 const normalizeHue = (hue: number) => ((hue = hue % 360) < 0 ? hue + 360 : hue);
 

@@ -1,4 +1,5 @@
-import { CssGamut, RgbCubeVertex, RgbCubeVertexName } from '../types';
+
+import { CssGamut, RgbCubeVertex, RgbCubeVertexName } from "./types";
 
 function toCssString(gamut: CssGamut = 'srgb'): string {
   const { r, g, b } = this as RgbCubeVertex;

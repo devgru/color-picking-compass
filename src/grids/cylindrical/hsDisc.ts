@@ -1,4 +1,7 @@
-import { HSPoint } from '../../types';
+export type HSPoint = {
+  h: number;
+  s: number;
+};
 
 export const hsDisc = (step: number = 1): HSPoint[] => {
   const points: HSPoint[] = [{ h: 0, s: 0 }];
