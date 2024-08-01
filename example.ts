@@ -35,7 +35,7 @@ const gamuts = [
 ];
 
 console.log(
-  'Looking for opposite color for each of the RGB cube corner colors.',
+  'Looking for the opposite color of each RGB cube corner color and calculating ∆EITP between the color and its opposite.',
 );
 
 for (const { name, cssGamut, fitsGamut } of gamuts) {
