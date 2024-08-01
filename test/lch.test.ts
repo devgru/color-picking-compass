@@ -1,11 +1,11 @@
 import { describe, test } from 'bun:test';
-import { fromLch } from '../src/polar/fromLch';
-import { toLch } from '../src/polar/toLch';
+import { itpFromLch } from '../src/cylindrical/itpFromLch';
+import { itpToLch } from '../src/cylindrical/itpToLch';
 import { verifyObject } from './helpers';
 import { Itp } from "../src/types/colors";
 
 const verifyConversion = (color: Itp) => {
-  verifyObject(color, fromLch(toLch(color)));
+  verifyObject(color, itpFromLch(itpToLch(color)));
 };
 
 describe('LCH conversion', () => {

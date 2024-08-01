@@ -19,8 +19,8 @@ const distance = <M extends Mode>(
       }, 0),
   );
 
-export interface LinearColorScale<M extends Mode> extends ColorScale<M> {
-  stretchToGamut: (inGamut: InGamutFn<M>) => LinearColorScale<M>;
+export interface CartesianColorScale<M extends Mode> extends ColorScale<M> {
+  stretchToGamut: (inGamut: InGamutFn<M>) => CartesianColorScale<M>;
   invert: (color: ColorInMode<M>) => number;
   consumeWithNaturalMetric: (
     diffFn: DiffFn<M>,
@@ -28,19 +28,19 @@ export interface LinearColorScale<M extends Mode> extends ColorScale<M> {
   ) => ColorInMode<M>[];
 }
 
-export const linearColorScale = <M extends Mode>(
+export const cartesianColorScale = <M extends Mode>(
   colors: [ColorInMode<M>, ColorInMode<M>],
-): LinearColorScale<M> => {
+): CartesianColorScale<M> => {
   if (Object.hasOwn(colors[0], 'h')) {
     throw new Error(
-      'Using linearColorScale for cylindrical color models is not allowed.',
+      'Using cartesianColorScale for cylindrical color models is not allowed.',
     );
   }
 
   const scale = colorScale<M>(colors, false);
   const instance = (n: number) => ({ ...scale(n) });
 
-  instance.stretchToGamut = (inGamut: InGamutFn<M>): LinearColorScale<M> => {
+  instance.stretchToGamut = (inGamut: InGamutFn<M>): CartesianColorScale<M> => {
     const bisectGamutEdge = (current: number, step: number): ColorInMode<M> => {
       const extent = instance(current + step);
       if (inGamut(extent)) {
@@ -56,7 +56,7 @@ export const linearColorScale = <M extends Mode>(
     const currentColorEdge = bisectGamutEdge(0.5, -1);
     const oppositeColorEdge = bisectGamutEdge(0.5, 1);
 
-    return linearColorScale([currentColorEdge, oppositeColorEdge]);
+    return cartesianColorScale([currentColorEdge, oppositeColorEdge]);
   };
 
   instance.invert = (color: ColorInMode<M>): number => {

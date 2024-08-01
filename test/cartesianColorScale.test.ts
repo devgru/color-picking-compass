@@ -1,31 +1,37 @@
 import { describe, expect, test } from 'bun:test';
-import { unary } from 'lodash-es';
-import { linearColorScale } from '../src/scales/linearColorScale';
+import { cartesianColorScale } from '../src/scales/cartesianColorScale';
 import {
   differenceCie76,
   differenceItp,
   displayable,
   itp,
-  lab65,
   Lab65,
+  Rgb,
   rgb,
 } from 'culori';
 
 import { Itp } from '../src/types/colors';
 
-describe('linear color scale', () => {
+describe('cartesian color scale', () => {
+  const rgbs: [Rgb, Rgb] = [rgb('#010000'), rgb('#030000')];
   test('stretch', () => {
-    const scale = linearColorScale(['#010000', '#020000'].map(unary(rgb)));
+    const scale = cartesianColorScale(rgbs);
     const stretched = scale.stretchToGamut(displayable);
-    expect(stretched.invert(rgb('#010000'))).not.toBe(
-      stretched.invert(rgb('#020000')),
-    );
+    expect(stretched.invert(rgb('#000000'))).toBeCloseTo(0);
+    expect(stretched.invert(rgb('#7f7f7f'))).toBeCloseTo(0.5);
+    expect(stretched.invert(rgb('#ffffff'))).toBeCloseTo(1);
+  });
+
+  test('identity', () => {
+    const scale = cartesianColorScale(rgbs);
+    expect(scale(0) !== scale(0)).toBeTrue();
   });
 
   test('invert', () => {
-    const scale = linearColorScale(['#010000', '#020000'].map(unary(rgb)));
+    const scale = cartesianColorScale(rgbs);
     expect(scale.invert(rgb('#010000'))).toBeCloseTo(0);
-    expect(scale.invert(rgb('#020000'))).toBeCloseTo(1);
+    expect(scale.invert(rgb('#020000'))).toBeCloseTo(0.5);
+    expect(scale.invert(rgb('#030000'))).toBeCloseTo(1);
   });
 
   test('consume LAB scale', () => {
@@ -41,7 +47,7 @@ describe('linear color scale', () => {
       a: 0,
       b: 0,
     };
-    const scale = linearColorScale([FROM, TO], unary(lab65));
+    const scale = cartesianColorScale([FROM, TO]);
 
     const colors = scale.consume(differenceCie76(), 1);
     expect(colors[0]).toEqual(FROM);
@@ -62,8 +68,7 @@ describe('linear color scale', () => {
       t: 0,
       p: 0,
     };
-    const colors1 = [FROM, TO].map(unary(itp));
-    const scale = linearColorScale(colors1);
+    const scale = cartesianColorScale([itp(FROM), itp(TO)]);
 
     const colors = scale.consume(differenceItp(), 360);
     expect(colors[0]).toEqual(FROM);
@@ -84,7 +89,7 @@ describe('linear color scale', () => {
       t: 0,
       p: 0,
     };
-    const scale = linearColorScale([FROM, TO].map(unary(itp)));
+    const scale = cartesianColorScale([FROM, TO]);
 
     const colors = scale.consume(differenceItp(), 90);
     expect(colors[0]).toEqual(FROM);
@@ -105,7 +110,7 @@ describe('linear color scale', () => {
       t: 0,
       p: 0,
     };
-    const scale = linearColorScale([FROM, TO].map(unary(itp)));
+    const scale = cartesianColorScale([FROM, TO]);
 
     const colors = scale.consumeWithNaturalMetric(differenceItp(), 90);
     expect(colors[0]).toEqual(FROM);

@@ -1,25 +1,28 @@
 import { Lch } from 'culori';
 
-import { toLch } from '../polar/toLch';
-import { fromLch } from '../polar/fromLch';
+import { itpToLch } from '../cylindrical/itpToLch';
+import { itpFromLch } from '../cylindrical/itpFromLch';
 import { ColorScale, colorScale } from './colorScale';
 import { DiffFn, Itp } from '../types/colors';
 
-export const itpSpiralScale = (
+export const itpCylindricalColorScale = (
   [c1, c2]: [Itp, Itp],
   optimizeHueTraversal = true,
 ): ColorScale<'itp'> => {
   const scale: ColorScale<'lch'> = colorScale(
-    [toLch(c1), toLch(c2)],
+    [itpToLch(c1), itpToLch(c2)],
     optimizeHueTraversal,
   );
 
-  const instance = (n: number) => fromLch(scale(n));
+  const instance = (n: number) => itpFromLch(scale(n));
 
   instance.consume = (diffFn: DiffFn<'itp'>, maxDiff: number): Itp[] =>
     scale
-      .consume((c1: Lch, c2: Lch) => diffFn(fromLch(c1), fromLch(c2)), maxDiff)
-      .map(fromLch);
+      .consume(
+        (c1: Lch, c2: Lch) => diffFn(itpFromLch(c1), itpFromLch(c2)),
+        maxDiff,
+      )
+      .map(itpFromLch);
 
   return instance;
 };

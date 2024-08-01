@@ -14,51 +14,70 @@ Color Picking Compass is built with [Culori](https://culorijs.org/) in mind, is 
 
 The project is under development and is getting occasional updates.
 
-## API
+## Implementation details
 
-### Color scales
-
-Color scale is an interface.
-
-Every color scale is a function that accepts a number (normally between 0 and 1) and returns a `Color`.
-
-Color scale internally uses [D3 linear scale](https://d3js.org/d3-scale/linear). The important nuance is
-that `colorScale`'s return values are new objects, while D3 scales return the same object on each call.
+All color scale constructors internally use [D3 linear scale](https://d3js.org/d3-scale/linear) and [D3 object interpolation](https://d3js.org/d3-interpolate/value#interpolateObject). The important nuance is
+that `colorScale`'s return values are new objects on each call, while D3 object interpolation reuses a single object on each call.
 
 ```typescript
-import { differenceCiede2000 } from "culori";
-
 // returns a representation of a color between the two colors
 colorScale(0.5)
 
 // false, `colorScale` returns a new object on each call
 colorScale(0.5) === colorScale(0.5)
+```
+
+## API
+
+Library API provides several color scale constructors. Every color scale is a function that accepts a number (usually between 0 and 1) and returns a `Color` (a plain object, as defined in [culori API](https://culorijs.org/api/)).
+
+### Color scale
+
+Color scale is a function that accepts a number (normally between 0 and 1) and returns a `Color`.
+
+```typescript
+import { colorScale } from "color-picking-compass";
+
+// constructed as follows:
+// (colorPair: [Color, Color], optimizeHueTraversal: boolean) => (n: number) => Color
+
+```
+
+Constructs a new color scale that interpolates between a pair of colors using computed cylindrical coordinates (hue, chromaticity).
+
+- `colorPair` is an array of colors. `colorPair` should contain objects with a consistent shape (i.e. representing colors in one color space);
+- `optimizeHueTraversal` is an optional flag that changes the approach to hue interpolation (if applicable, i.e. if color space uses color space defined in cylindrical coordinates). Normally, scale optimizes hue interpolation, i.e. shortcutting between 0 and 360°. If you want to avoid this behavior, set the flag to `false`.
+
+Color scale can produce an array of colors separated by no less than a specified delta E value using `consume` function:
+
+```typescript
+import { differenceCiede2000 } from "culori";
 
 // returns an array of colors offset by at least delta E of 10
 colorScale.consume(differenceCiede2000(), 10)
 ```
 
-#### Linear color scale
+### Cartesian color scale
 
-Linear color scale is a color scale that is defined by a color pair and interpolates between colors linearly.
+Cartesian color scale is a color scale that is defined by a color pair, in which each color is defined by a set of coordinates in a cartesian color space.
 
 ```typescript
-import { linearColorScale } from "color-picking-compass";
+import { cartesianColorScale } from "color-picking-compass";
 
-linearColorScale = (colorPair: [Color, Color]) => (n: number) => Color
+// constructed as follows:
+// (colorPair: [Color, Color]) => (n: number) => Color
 
 ```
 
-Constructs a new linear color scale that interpolates between a pair of colors.
+Constructs a new color scale that interpolates between a pair of colors.
 
-- `colorPair` is an array of colors. `colorPair` should contain objects with a consistent shape (
-  i.e. representing colors in one color space);
+- `colorPair` is an array of colors. `colorPair` should contain objects with a consistent shape (i.e. representing colors in one color space);
 
 ```typescript
 import { oklab } from "culori";
-import { linearColorScale } from "color-picking-compass";
+import { cartesianColorScale } from "color-picking-compass";
 
-const scale = linearColorScale([
+const scale = cartesianColorScale([
   oklab('#ff0000'),
   oklab('#0000ff')
 ]);
@@ -67,51 +86,52 @@ const midpoint = scale(0.5);
 // { mode: "oklab", l: 0.54, a: 0.1, b: -0.09 }
 ```
 
-As some color difference formulas are defined as Euclidean distances, we might utilize this to optimize scale consumption:
+As some color difference formulas are defined as Euclidean distances, we might utilize this property to optimize scale consumption. The library provides `consumeWithNaturalMetric` that does just that:
 
 ```typescript
 import { lab, itp, differenceCie76, differenceItp } from "culori";
-import { linearColorScale } from "color-picking-compass";
+import { cartesianColorScale } from "color-picking-compass";
 
-const scale = linearColorScale([
+const scale = cartesianColorScale([
   lab('#ff0000'),
   lab('#0000ff')
 ]);
-scale.consume(differenceCie76(), 5) // will calculate delta E for each step
-scale.consumeWithNaturalMetric(differenceCie76(), 5) // will calculate delta E once for the whole scale
+
+// will calculate delta E for each step
+scale.consume(differenceCie76(), 5)
+
+// will calculate delta E once for the whole scale
+scale.consumeWithNaturalMetric(differenceCie76(), 5)
 
 // same optimization is available for ICtCp:
-const scaleItp = linearColorScale([
+const scaleItp = cartesianColorScale([
   itp('#ff0000'),
   itp('#0000ff')
 ])
 scaleItp.consumeWithNaturalMetric(differenceItp(), 5);
 ```
 
-#### ICtCp spiral scale
+### ICtCp (ITP) cylindrical color scale
 
-A special case of the spiral scale that operates in polar coordinates on top of the ICtCp color space.
-
-Constructs a new spiral color scale that interpolates between a pair of colors using polar coordinates (hue, chromaticity).
+A special case of the cylindrical color scale that operates in ICtCp (ITP) color space. There is no name or standard for this approach, it is related to ICtCp as LCH relates to LAB or OKLCH relates to OKLAB, by converting cartesian coordinates to cylindrical ones, including T (`tritan`) component coefficient of 0.5.
 
 ```typescript
-import { itpSpiralScale } from "color-picking-compass";
+import { itpCylindricalColorScale } from "color-picking-compass";
 
-itpSpiralScale(
-  colorPair: [Itp, Itp],
-  optimizeHueTraversal: boolean = true
-) => (n: number) => Itp
+// constructed as follows:
+// (colorPair: [Itp, Itp], optimizeHueTraversal: boolean) => (n: number) => Itp
 ```
 
-- `colorPair` is an array of colors in ICtCp model, convert other representations using `culori.itp` if needed;
-- `optimizeHueTraversal` is an optional flag that changes the approach to hue interpolation. Normally, scale optimizes hue interpolation, e.g. shortcutting between 0 and 360°. If you want to avoid this behavior, set the flag to `false`.
+Constructs a new color scale that interpolates between a pair of colors using computed cylindrical coordinates (intensity, hue, chromaticity).
 
+- `colorPair` is an array of colors in ICtCp (ITP) model, convert other representations using `culori.itp` if needed;
+- `optimizeHueTraversal` is an optional flag that changes the approach to hue interpolation. Normally, scale optimizes hue interpolation, i.e. shortcutting between 0 and 360°. If you want to avoid this behavior, set the flag to `false`.
 
 ```typescript
 import { formatHex, itp } from "culori";
-import { itpSpiralScale } from "color-picking-compass";
+import { itpCylindricalColorScale } from "color-picking-compass";
 
-const scale = itpSpiralScale(['#ff0000', '#0000ff'].map(itp));
+const scale = itpCylindricalColorScale(['#ff0000', '#0000ff'].map(itp));
 
 const midpoint = formatHex(scale(0.5)); // #cd00ff
 ```

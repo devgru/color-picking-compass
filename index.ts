@@ -13,7 +13,7 @@ export * from './src/grids/cylindrical/okHsvGrid';
 export * from './src/grids/linear/p3MonochromeLine';
 export * from './src/grids/linear/sRgbMonochromeLine';
 
+export * from './src/scales/cartesianColorScale';
 export * from './src/scales/colorScale';
 export * from './src/scales/findOppositeColor';
-export * from './src/scales/itpSpiralScale';
-export * from './src/scales/linearColorScale';
+export * from './src/scales/itpCylindricalColorScale';
