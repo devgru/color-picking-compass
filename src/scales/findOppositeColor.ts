@@ -9,8 +9,8 @@ export const findOppositeColor = <M extends Mode>(
   // `cartesianColorScale` is used to interpolate colors between current point and the origin.
   const scale = cartesianColorScale([color, origin]);
 
-  // To find the opposite color we need to extend this scale using `stretchToGamut`.
-  const gamutStretchedScale = scale.stretchToGamut(inGamut);
+  // To find the opposite color we need to extend this scale using `stretch`.
+  const gamutStretchedScale = scale.stretch(inGamut);
 
   // To use resulting scale we first need to find current color on it using `invert`.
   const closestPointOnScale = gamutStretchedScale.invert(color);

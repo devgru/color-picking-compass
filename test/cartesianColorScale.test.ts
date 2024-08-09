@@ -16,7 +16,7 @@ describe('cartesian color scale', () => {
   const rgbs: [Rgb, Rgb] = [rgb('#010000'), rgb('#030000')];
   test('stretch', () => {
     const scale = cartesianColorScale(rgbs);
-    const stretched = scale.stretchToGamut(displayable);
+    const stretched = scale.stretch(displayable);
     expect(stretched.invert(rgb('#000000'))).toBeCloseTo(0);
     expect(stretched.invert(rgb('#7f7f7f'))).toBeCloseTo(0.5);
     expect(stretched.invert(rgb('#ffffff'))).toBeCloseTo(1);

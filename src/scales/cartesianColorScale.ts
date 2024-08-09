@@ -20,7 +20,7 @@ const distance = <M extends Mode>(
   );
 
 export interface CartesianColorScale<M extends Mode> extends ColorScale<M> {
-  stretchToGamut: (inGamut: InGamutFn<M>) => CartesianColorScale<M>;
+  stretch: (inGamut: InGamutFn<M>) => CartesianColorScale<M>;
   invert: (color: ColorInMode<M>) => number;
   consumeWithNaturalMetric: (
     diffFn: DiffFn<M>,
@@ -40,7 +40,7 @@ export const cartesianColorScale = <M extends Mode>(
   const scale = colorScale<M>(colors, false);
   const instance = (n: number) => ({ ...scale(n) });
 
-  instance.stretchToGamut = (inGamut: InGamutFn<M>): CartesianColorScale<M> => {
+  instance.stretch = (inGamut: InGamutFn<M>): CartesianColorScale<M> => {
     const bisectGamutEdge = (current: number, step: number): ColorInMode<M> => {
       const extent = instance(current + step);
       if (inGamut(extent)) {
