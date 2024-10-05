@@ -13,14 +13,14 @@ export const findOppositeColor = <M extends Mode>(
   // we `stretch` the scale to reach gamut edges
   const edgeToOppositeEdgeScale = scale.stretch(inGamut);
 
-  // with the stretched scale we can compute the position of the picked color in relation to the edge and the origin
+  // with the stretched scale we can compute the position of the picked color in the relation to the edge and the origin
   // first, we get the color at the edge of the gamut
   const edge = edgeToOppositeEdgeScale(0);
 
   // then we create a new scale between the edge and the origin
   const edgeToOrigin = cartesianColorScale([edge, origin]);
 
-  // we call `invert` on the scale to find the position of the picked color in relation to the edge and the origin
+  // we call `invert` on the scale to find the position of the picked color in the relation to the edge and the origin
   const closestPointOnScale = edgeToOrigin.invert(pickedColor);
 
   // to compute the opposite color, we need to find the color with the similar offset from the edge
