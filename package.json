@@ -4,6 +4,14 @@
   "main": "dist.js",
   "author": "Dima Semyushkin <git@devg.ru> (https://devg.ru)",
   "type": "module",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "license": "MIT",
   "peerDependencies": {
     "d3-interpolate": "3",
@@ -21,11 +29,11 @@
     "rgb cube"
   ],
   "scripts": {
-    "prepack": "bun build index.js --minify --outfile=dist.js -e d3-interpolate -e d3-scale",
+    "prepack": "tsup",
     "test": "bun run prepack ; bun test"
   },
   "files": [
-    "dist.js"
+    "dist"
   ],
   "devDependencies": {
     "@types/bun": "1",
@@ -33,6 +41,8 @@
     "@types/d3-interpolate": "3",
     "@types/d3-scale": "4",
     "culori": "4",
-    "prettier": "3"
+    "prettier": "3",
+    "tsup": "^8.3.0",
+    "typescript": "5.6"
   }
 }
