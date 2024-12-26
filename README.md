@@ -4,7 +4,7 @@ Color Picking Compass is built to automate the creation of color schemes and pal
 
 The project is WIP in 2024, some basic building blocks are already in place.
 
-Explore [the API documentation](https://observablehq.com/@devgru/cpc) and [demo gallery](https://observablehq.com/collection/@devgru/color-picking-compass).
+Explore [the API documentation](https://observablehq.com/@devgru/cpc) and [demo gallery](https://observablehq.com/collection/@devgru/color-picking-compass-examples).
 
 ## License
 
